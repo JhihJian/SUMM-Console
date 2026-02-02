@@ -97,3 +97,12 @@ body {
   pointer-events: none;
   z-index: 1000;
 }
+
+/* xterm.js overrides */
+.xterm {
+  padding: 8px;
+}
+
+.xterm .xterm-viewport {
+  overflow-y: auto;
+}
