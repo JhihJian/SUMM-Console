@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs'
 import path from 'path'
 import { config } from './config.js'
-import { Todo, ProgressItem } from '../shared/types.js'
+import type { Todo, ProgressItem } from '../shared/types.js'
 
 export async function ensureSummDir(): Promise<void> {
   const dirs = [
@@ -16,7 +16,6 @@ export async function ensureSummDir(): Promise<void> {
     try {
       await fs.mkdir(dir, { recursive: true })
     } catch (err) {
-      // Ignore if already exists
       if ((err as NodeJS.ErrnoException).code !== 'EEXIST') {
         throw err
       }
@@ -70,7 +69,6 @@ export async function readTodo(id: string): Promise<Todo | null> {
 export async function writeTodo(todo: Todo): Promise<void> {
   const todoDir = safePath(TODOS_DIR, todo.id)
   await fs.mkdir(todoDir, { recursive: true })
-
   const metaPath = path.join(todoDir, 'meta.json')
   await fs.writeFile(metaPath, JSON.stringify(todo, null, 2), 'utf-8')
 }
@@ -85,14 +83,11 @@ export async function archiveTodo(id: string): Promise<void> {
   if (!todo) {
     throw new Error('E001: Resource not accessible')
   }
-
   const todoDir = safePath(TODOS_DIR, id)
   const archiveDir = safePath(path.join(config.summDir, 'archive', 'todos'), id)
-
   await fs.rename(todoDir, archiveDir)
 }
 
-// Draft operations
 const DRAFT_PATH = path.join(config.summDir, 'draft.txt')
 
 export async function readDraft(): Promise<string> {
@@ -107,7 +102,6 @@ export async function writeDraft(content: string): Promise<void> {
   await fs.writeFile(DRAFT_PATH, content, 'utf-8')
 }
 
-// Progress operations
 const PROGRESS_PATH = path.join(config.summDir, 'progress.json')
 const ARCHIVE_PROGRESS_DIR = path.join(config.summDir, 'archive', 'progress')
 
@@ -130,14 +124,22 @@ export async function archiveProgress(): Promise<void> {
   try {
     const items = await readProgress()
     if (items.length === 0) return
-
     const timestamp = new Date().toISOString().split('T')[0]
     const archivePath = path.join(ARCHIVE_PROGRESS_DIR, `${timestamp}.json`)
-
     await fs.mkdir(ARCHIVE_PROGRESS_DIR, { recursive: true })
     await fs.writeFile(archivePath, JSON.stringify(items, null, 2), 'utf-8')
     await fs.writeFile(PROGRESS_PATH, '[]', 'utf-8')
   } catch (err) {
     throw new Error('E001: Archive operation failed')
+  }
+}
+
+const PLAN_PATH = path.join(config.summDir, 'plan.md')
+
+export async function readPlan(): Promise<string> {
+  try {
+    return await fs.readFile(PLAN_PATH, 'utf-8')
+  } catch {
+    return '# Work Plan\n\nNo work plan configured yet.'
   }
 }

@@ -11,7 +11,7 @@ await fastify.register(cors, {
 })
 
 // Health check route
-fastify.get('/api/health', async (request, reply) => {
+fastify.get('/api/health', async () => {
   return { status: 'ok', message: 'SUMM Console Backend Ready' }
 })
 

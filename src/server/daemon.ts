@@ -1,5 +1,5 @@
 import { spawn, ChildProcess } from 'child_process'
-import { Session } from '../shared/types.js'
+import type { Session } from '../shared/types.js'
 
 interface DaemonResult {
   success: boolean
@@ -124,4 +124,5 @@ export function attachSummMain(): ChildProcess {
   return proc
 }
 
-export { execSummCommand, DaemonResult }
+export { execSummCommand }
+export type { DaemonResult }
