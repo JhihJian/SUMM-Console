@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
       outDir: '../../dist/client',
       emptyOutDir: true,
       sourcemap: !isProduction,
-      minify: 'terser',
+      minify: 'esbuild',
       rollupOptions: {
         output: {
           manualChunks: {
