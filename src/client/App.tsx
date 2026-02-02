@@ -1,15 +1,21 @@
+import React from 'react'
+import { TitleBar } from './components/layout/TitleBar.js'
+import { MainGrid, PlaceholderPanels } from './components/layout/MainGrid.js'
+import './styles/global.css'
+
 function App() {
   return (
     <div style={{
-      background: '#0a0a12',
-      color: '#e0e0e8',
-      minHeight: '100vh',
+      background: 'var(--color-bg-primary)',
+      color: 'var(--color-text-primary)',
+      height: '100vh',
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'JetBrains Mono, monospace'
+      flexDirection: 'column'
     }}>
-      <h1>SUMM Console - Frontend Ready</h1>
+      <TitleBar status="online" />
+      <MainGrid>
+        <PlaceholderPanels />
+      </MainGrid>
     </div>
   )
 }
