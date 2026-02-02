@@ -1,0 +1,19 @@
+{
+  "name": "summ-console",
+  "version": "0.1.0",
+  "description": "SUMM Console - Web interface for SUMM AI agent system",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "vite",
+    "dev:server": "tsx watch src/server/index.ts",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build",
+    "build:server": "tsc -p tsconfig.node.json",
+    "start": "node dist/server/index.js",
+    "preview": "vite preview"
+  },
+  "keywords": ["summ", "console", "ai", "agent"],
+  "author": "",
+  "license": "MIT"
+}
