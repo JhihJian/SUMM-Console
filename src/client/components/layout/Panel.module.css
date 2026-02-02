@@ -1,0 +1,78 @@
+.panel {
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  min-height: 40px;
+}
+
+.panelTitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent-cyan);
+}
+
+.panelActions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.panelBody {
+  flex: 1;
+  overflow: auto;
+  padding: var(--spacing-md);
+}
+
+/* Panel variants */
+.panel.primary {
+  border-color: var(--color-accent-cyan);
+}
+
+.panel.primary .panelTitle {
+  color: var(--color-accent-cyan);
+}
+
+.panel.secondary {
+  border-color: var(--color-accent-magenta);
+}
+
+.panel.secondary .panelTitle {
+  color: var(--color-accent-magenta);
+}
+
+.panel.tertiary {
+  border-color: var(--color-accent-amber);
+}
+
+.panel.tertiary .panelTitle {
+  color: var(--color-accent-amber);
+}
+
+/* Compact variant */
+.panel.compact .panelHeader {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  min-height: 32px;
+}
+
+.panel.compact .panelTitle {
+  font-size: 16px;
+}
+
+.panel.compact .panelBody {
+  padding: var(--spacing-sm);
+}
