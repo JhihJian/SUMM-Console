@@ -1,0 +1,89 @@
+.tokenContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.tokenMain {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+.tokenUsed {
+  font-size: 20px;
+  font-family: var(--font-display);
+  color: var(--color-text-primary);
+}
+
+.tokenTotal {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.tokenPercentage {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.tokenPercentage.low {
+  color: var(--color-accent-green);
+}
+
+.tokenPercentage.medium {
+  color: var(--color-accent-amber);
+}
+
+.tokenPercentage.high {
+  color: var(--color-accent-magenta);
+}
+
+.progressBar {
+  height: 8px;
+  background: var(--color-bg-tertiary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  transition: width var(--transition-normal);
+}
+
+.progressFill.low {
+  background: linear-gradient(90deg, var(--color-accent-green), #00cc66);
+}
+
+.progressFill.medium {
+  background: linear-gradient(90deg, var(--color-accent-amber), #ff9900);
+}
+
+.progressFill.high {
+  background: linear-gradient(90deg, var(--color-accent-magenta), #cc00cc);
+}
+
+.tokenSegments {
+  display: flex;
+  gap: 4px;
+}
+
+.tokenSegment {
+  flex: 1;
+  height: 4px;
+  background: var(--color-bg-tertiary);
+  border-radius: 2px;
+}
+
+.tokenSegment.active {
+  background: var(--color-accent-cyan);
+}
+
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
