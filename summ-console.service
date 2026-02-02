@@ -1,0 +1,21 @@
+[Unit]
+Description=SUMM Console
+After=network.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/opt/summ-console
+Environment="NODE_ENV=production"
+Environment="PORT=3000"
+EnvironmentFile=/opt/summ-console/.env
+ExecStart=/usr/bin/node dist/server/index.js
+Restart=on-failure
+RestartSec=10
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
