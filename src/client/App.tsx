@@ -1,4 +1,3 @@
-import React from 'react'
 import { TitleBar } from './components/layout/TitleBar.js'
 import { MainGrid } from './components/layout/MainGrid.js'
 import { TodoPanel } from './components/TodoPanel.js'
@@ -11,7 +10,6 @@ import { TokenPanel } from './components/TokenPanel.js'
 import { ToastContainer } from './components/Toast.js'
 import { useToast } from './hooks/useToast.js'
 import './styles/global.css'
-import styles from './App.module.css'
 
 function App() {
   const { toasts, removeToast } = useToast()

@@ -26,7 +26,7 @@ export function useTerminal(options: TerminalOptions = {}) {
 
   const [connected, setConnected] = useState(false)
   const [needsDecision, setNeedsDecision] = useState(false)
-  const reconnectTimeoutRef = useRef<number>()
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   // Initialize terminal
   useEffect(() => {
@@ -40,7 +40,6 @@ export function useTerminal(options: TerminalOptions = {}) {
         background: '#0a0a12',
         foreground: '#e0e0e8',
         cursor: '#00fff9',
-        selection: 'rgba(0, 255, 249, 0.3)',
         black: '#1a1a24',
         red: '#ff00ff',
         green: '#00ff88',
@@ -118,9 +117,9 @@ export function useTerminal(options: TerminalOptions = {}) {
         setConnected(false)
         setNeedsDecision(false)
         // Auto-reconnect after 3 seconds
-        reconnectTimeoutRef.current = window.setTimeout(() => {
+        reconnectTimeoutRef.current = setTimeout(() => {
           connect()
-        }, 3000) as unknown as number
+        }, 3000)
       }
 
       ws.onerror = () => {
@@ -142,12 +141,12 @@ export function useTerminal(options: TerminalOptions = {}) {
   useEffect(() => {
     const handleResize = () => {
       fitAddonRef.current?.fit()
-      if (wsRef.current?.readyState === WebSocket.OPEN) {
-        const dims = fitAddonRef.current?.terminal
+      if (wsRef.current?.readyState === WebSocket.OPEN && terminalRef.current) {
+        const dims = terminalRef.current
         wsRef.current.send(JSON.stringify({
           type: 'resize',
-          cols: dims?.cols || 80,
-          rows: dims?.rows || 24
+          cols: dims.cols,
+          rows: dims.rows
         } as TerminalMessage))
       }
     }
