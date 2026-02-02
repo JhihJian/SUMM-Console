@@ -1,0 +1,42 @@
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-tertiary) 0%,
+    var(--color-border) 50%,
+    var(--color-bg-tertiary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.title {
+  height: 16px;
+  width: 60%;
+  margin-bottom: 8px;
+}
+
+.bar {
+  height: 4px;
+  width: 100%;
+}
+
+.id {
+  height: 12px;
+  width: 120px;
+}
+
+.status {
+  height: 12px;
+  width: 60px;
+}
+
+.task {
+  height: 12px;
+  width: 80%;
+}
