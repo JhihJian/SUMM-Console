@@ -11,14 +11,18 @@ import { planRoutes } from './routes/plan.js'
 import { sessionsRoutes } from './routes/sessions.js'
 import { tokenRoutes } from './routes/token.js'
 import { handleTerminalConnection, closeAllConnections } from './ws/terminal.js'
+import { readFileSync } from 'fs'
+import { join } from 'path'
+
+const isProduction = process.env.NODE_ENV === 'production'
 
 const fastify = Fastify({
-  logger: true
+  logger: !isProduction
 })
 
 // Register CORS
 await fastify.register(cors, {
-  origin: true
+  origin: process.env.CORS_ORIGIN || true
 })
 
 // Register multipart for file uploads
@@ -26,6 +30,13 @@ await fastify.register(multipart, {
   limits: {
     fileSize: 50 * 1024 * 1024 // 50MB
   }
+})
+
+// Security headers
+fastify.addHook('onRequest', async (_request, reply) => {
+  reply.header('X-Content-Type-Options', 'nosniff')
+  reply.header('X-Frame-Options', 'DENY')
+  reply.header('X-XSS-Protection', '1; mode=block')
 })
 
 // Ensure SUMM directory exists
@@ -41,12 +52,37 @@ await fastify.register(tokenRoutes)
 
 // Health check route
 fastify.get('/api/health', async () => {
-  return { status: 'ok', message: 'SUMM Console Backend Ready' }
+  return {
+    status: 'ok',
+    message: 'SUMM Console Backend Ready',
+    version: process.env.npm_package_version || '0.1.0'
+  }
 })
+
+// Serve static files in production
+if (isProduction) {
+  // Import @fastify/static dynamically for production
+  const staticModule = await import('@fastify/static')
+  const fastifyStatic = staticModule.default
+
+  await fastify.register(fastifyStatic, {
+    root: join(process.cwd(), 'dist/client'),
+    prefix: '/'
+  })
+
+  // SPA fallback - serve index.html for non-API routes
+  fastify.setNotFoundHandler(async (_request, reply) => {
+    const indexPath = join(process.cwd(), 'dist/client', 'index.html')
+    const indexContent = readFileSync(indexPath, 'utf-8')
+    reply.type('text/html').send(indexContent)
+  })
+}
 
 // Global error handler
 fastify.setErrorHandler((error, _request, reply) => {
-  fastify.log.error(error)
+  if (!isProduction) {
+    fastify.log.error(error)
+  }
   const statusCode = (error as any).statusCode || 500
   reply.code(statusCode).send({
     success: false,
@@ -54,12 +90,14 @@ fastify.setErrorHandler((error, _request, reply) => {
   })
 })
 
-// 404 handler
+// 404 handler for API routes
 fastify.setNotFoundHandler((_request, reply) => {
-  reply.code(404).send({
-    success: false,
-    error: 'Not found'
-  })
+  if (_request.url?.startsWith('/api') || _request.url?.startsWith('/ws')) {
+    reply.code(404).send({
+      success: false,
+      error: 'Not found'
+    })
+  }
 })
 
 // Start server
