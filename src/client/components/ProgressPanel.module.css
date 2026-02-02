@@ -1,0 +1,66 @@
+.progressList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.progressItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.progressTime {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.progressContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.progressDescription {
+  font-size: 12px;
+  color: var(--color-text-primary);
+}
+
+.progressTodoLink {
+  font-size: 10px;
+  color: var(--color-accent-cyan);
+  margin-top: 2px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.archiveButton {
+  width: 100%;
+  padding: var(--spacing-sm);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 11px;
+  transition: all var(--transition-fast);
+  margin-top: var(--spacing-sm);
+}
+
+.archiveButton:hover {
+  border-color: var(--color-accent-cyan);
+  color: var(--color-accent-cyan);
+}
+
+.archiveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
