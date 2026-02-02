@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { useTodos } from '../hooks/useTodos.js'
 import type { Todo } from '../../shared/types.js'
 import { TodoFilesModal } from './modals/TodoFilesModal.js'
+import { TodoCreateModal } from './modals/TodoCreateModal.js'
 import styles from './TodoPanel.module.css'
 import { Panel } from './layout/Panel.js'
 
@@ -39,7 +40,7 @@ function TodoItem({ todo, onClick }: TodoItemProps) {
     >
       <div className={styles.todoHeader}>
         <span className={styles.todoDragHandle} {...attributes} {...listeners}>
-          ☰
+          :::
         </span>
         <span className={styles.todoTitle}>{todo.title}</span>
       </div>
@@ -53,7 +54,7 @@ function TodoItem({ todo, onClick }: TodoItemProps) {
         <span>{todo.progress}%</span>
         {todo.files.length > 0 && (
           <span className={styles.todoFilesBadge}>
-            📎 {todo.files.length}
+            @ {todo.files.length}
           </span>
         )}
         <span className={`${styles.todoState} ${styles[todo.state]}`}>
@@ -73,7 +74,8 @@ export const TodoPanel: React.FC = () => {
   const { todos, loading, error, reorderTodos } = useTodos()
   const [activeId, setActiveId] = useState<string | null>(null)
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null)
-  const [showModal, setShowModal] = useState(false)
+  const [showFilesModal, setShowFilesModal] = useState(false)
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   const activeTodo = activeId ? todos.find(t => t.id === activeId) : null
 
@@ -100,53 +102,77 @@ export const TodoPanel: React.FC = () => {
 
   const handleTodoClick = (todo: Todo) => {
     setSelectedTodo(todo)
-    setShowModal(true)
+    setShowFilesModal(true)
   }
 
   return (
-    <Panel title="TODO" variant="primary" compact>
-      {loading ? (
-        <div className={styles.todoLoading}>Loading...</div>
-      ) : error ? (
-        <div className={styles.todoError}>{error}</div>
-      ) : todos.length === 0 ? (
-        <div className={styles.todoEmpty}>No active tasks</div>
-      ) : (
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={todos.map(t => t.id)} strategy={verticalListSortingStrategy}>
-            <div className={styles.todoList}>
-              {todos.map(todo => (
-                <TodoItem key={todo.id} todo={todo} onClick={handleTodoClick} />
-              ))}
-            </div>
-          </SortableContext>
-          <DragOverlay>
-            {activeTodo && (
-              <div className={styles.todoItem}>
-                <span className={styles.todoTitle}>{activeTodo.title}</span>
+    <>
+      <Panel
+        title="TODO"
+        variant="primary"
+        compact
+        actions={
+          <button
+            onClick={() => setShowCreateModal(true)}
+            style={{
+              background: 'transparent',
+              border: '1px solid var(--color-accent-cyan)',
+              color: 'var(--color-accent-cyan)',
+              padding: '2px 8px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            + New
+          </button>
+        }
+      >
+        {loading ? (
+          <div className={styles.todoLoading}>Loading...</div>
+        ) : error ? (
+          <div className={styles.todoError}>{error}</div>
+        ) : todos.length === 0 ? (
+          <div className={styles.todoEmpty}>No active tasks</div>
+        ) : (
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={todos.map(t => t.id)} strategy={verticalListSortingStrategy}>
+              <div className={styles.todoList}>
+                {todos.map(todo => (
+                  <TodoItem key={todo.id} todo={todo} onClick={handleTodoClick} />
+                ))}
               </div>
-            )}
-          </DragOverlay>
-        </DndContext>
-      )}
+            </SortableContext>
+            <DragOverlay>
+              {activeTodo && (
+                <div className={styles.todoItem}>
+                  <span className={styles.todoTitle}>{activeTodo.title}</span>
+                </div>
+              )}
+            </DragOverlay>
+          </DndContext>
+        )}
+      </Panel>
 
-      {/* Modal will be added in next task */}
-      {showModal && selectedTodo && (
+      {showFilesModal && selectedTodo && (
         <TodoFilesModal
           todoId={selectedTodo.id}
           todoTitle={selectedTodo.title}
           files={selectedTodo.files}
-          onClose={() => setShowModal(false)}
+          onClose={() => setShowFilesModal(false)}
           onRefresh={() => {
-            // Force reload of todos
             window.location.reload()
           }}
         />
       )}
-    </Panel>
+
+      {showCreateModal && (
+        <TodoCreateModal onClose={() => setShowCreateModal(false)} />
+      )}
+    </>
   )
 }
