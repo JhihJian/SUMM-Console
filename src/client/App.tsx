@@ -1,6 +1,7 @@
 import { TitleBar } from './components/layout/TitleBar.js'
 import { MainGrid } from './components/layout/MainGrid.js'
 import { TodoPanel } from './components/TodoPanel.js'
+import { DraftPanel } from './components/DraftPanel.js'
 import './styles/global.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <TitleBar status="online" />
       <MainGrid>
         <TodoPanel />
+        <DraftPanel />
         {/* Other panels still placeholders */}
       </MainGrid>
     </div>
