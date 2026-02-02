@@ -4,6 +4,7 @@ import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-
 import { CSS } from '@dnd-kit/utilities'
 import { useTodos } from '../hooks/useTodos.js'
 import type { Todo } from '../../shared/types.js'
+import { TodoFilesModal } from './modals/TodoFilesModal.js'
 import styles from './TodoPanel.module.css'
 import { Panel } from './layout/Panel.js'
 
@@ -134,11 +135,17 @@ export const TodoPanel: React.FC = () => {
       )}
 
       {/* Modal will be added in next task */}
-      {showModal && (
-        <div onClick={() => setShowModal(false)}>
-          <div>TODO Files Modal - Coming Soon</div>
-          <div>Selected: {selectedTodo?.title}</div>
-        </div>
+      {showModal && selectedTodo && (
+        <TodoFilesModal
+          todoId={selectedTodo.id}
+          todoTitle={selectedTodo.title}
+          files={selectedTodo.files}
+          onClose={() => setShowModal(false)}
+          onRefresh={() => {
+            // Force reload of todos
+            window.location.reload()
+          }}
+        />
       )}
     </Panel>
   )
