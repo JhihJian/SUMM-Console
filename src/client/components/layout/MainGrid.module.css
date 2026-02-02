@@ -1,0 +1,75 @@
+.mainGrid {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  grid-template-rows: auto 1fr 1fr;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  height: calc(100vh - 48px);
+  overflow: hidden;
+}
+
+/* Column 1: TODO (top) + Draft (bottom) */
+.todoPanel {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.draftPanel {
+  grid-column: 1;
+  grid-row: 2 / span 2;
+}
+
+/* Column 2: Chat (top) + Display (bottom, spans 2 rows) */
+.chatPanel {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.displayPanel {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+}
+
+/* Column 3: Sessions (top) + Progress (middle) + Token (bottom) */
+.sessionsPanel {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.progressPanel {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.tokenPanel {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .mainGrid {
+    grid-template-columns: 240px 1fr 280px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    overflow-y: auto;
+    height: auto;
+  }
+
+  .todoPanel,
+  .draftPanel,
+  .chatPanel,
+  .displayPanel,
+  .sessionsPanel,
+  .progressPanel,
+  .tokenPanel {
+    grid-column: 1;
+    grid-row: auto;
+    height: 400px;
+  }
+}
