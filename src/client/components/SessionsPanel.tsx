@@ -5,7 +5,7 @@ import styles from './SessionsPanel.module.css'
 import { Panel } from './layout/Panel.js'
 import type { Session } from '../../shared/types.js'
 
-export const SessionsPanel: React.FC = () => {
+export const SessionsPanel = React.memo(() => {
   const { sessions, loading, error } = useSessions()
   const [selectedSession, setSelectedSession] = useState<Session | null>(null)
   const [showModal, setShowModal] = useState(false)
@@ -67,4 +67,4 @@ export const SessionsPanel: React.FC = () => {
       )}
     </>
   )
-}
+})

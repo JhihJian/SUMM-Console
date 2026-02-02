@@ -14,7 +14,7 @@ interface TodoItemProps {
   onClick: (todo: Todo) => void
 }
 
-function TodoItem({ todo, onClick }: TodoItemProps) {
+const TodoItem = React.memo(function TodoItem({ todo, onClick }: TodoItemProps) {
   const {
     attributes,
     listeners,
@@ -68,9 +68,9 @@ function TodoItem({ todo, onClick }: TodoItemProps) {
       )}
     </div>
   )
-}
+})
 
-export const TodoPanel: React.FC = () => {
+export const TodoPanel = React.memo(() => {
   const { todos, loading, error, reorderTodos } = useTodos()
   const [activeId, setActiveId] = useState<string | null>(null)
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null)
@@ -175,4 +175,4 @@ export const TodoPanel: React.FC = () => {
       )}
     </>
   )
-}
+})

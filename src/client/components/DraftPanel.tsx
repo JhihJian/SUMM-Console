@@ -3,7 +3,7 @@ import { useDraft } from '../hooks/useDraft.js'
 import styles from './DraftPanel.module.css'
 import { Panel } from './layout/Panel.js'
 
-export const DraftPanel: React.FC = () => {
+export const DraftPanel = React.memo(() => {
   const { content, setContent, loading, saving, charCount } = useDraft()
 
   if (loading) {
@@ -35,4 +35,4 @@ export const DraftPanel: React.FC = () => {
       </div>
     </Panel>
   )
-}
+})
