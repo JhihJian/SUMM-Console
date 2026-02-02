@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { sessionsApi } from '../api.js'
-import type { Session } from '../shared/types.js'
+import type { Session } from '@shared/types'
 
 export function useSessions() {
   const [sessions, setSessions] = useState<Session[]>([])

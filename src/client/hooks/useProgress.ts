@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { progressApi } from '../api.js'
-import type { ProgressItem } from '../shared/types.js'
+import type { ProgressItem } from '@shared/types'
 
 export function useProgress() {
   const [items, setItems] = useState<ProgressItem[]>([])

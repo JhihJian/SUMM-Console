@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { todoApi } from '../api.js'
-import type { Todo } from '../shared/types.js'
+import type { Todo } from '@shared/types'
 
 export function useTodos() {
   const [todos, setTodos] = useState<Todo[]>([])

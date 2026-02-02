@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { tokenApi } from '../api.js'
-import type { TokenUsage } from '../shared/types.js'
+import type { TokenUsage } from '../../shared/types.js'
 
 export function useTokenUsage() {
   const [usage, setUsage] = useState<TokenUsage>({

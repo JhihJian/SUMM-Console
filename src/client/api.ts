@@ -1,4 +1,4 @@
-import type { Todo, TodoFile, ProgressItem, Session, TokenUsage } from '../shared/types.js'
+import type { Todo, TodoFile, ProgressItem, Session, TokenUsage } from '@shared/types'
 
 const API_BASE = '/api'
 
