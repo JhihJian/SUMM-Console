@@ -8,11 +8,25 @@ interface ApiResponse<T = any> {
   error?: string
 }
 
+// Simple cache for GET requests
+const cache = new Map<string, { data: any; timestamp: number }>()
+const CACHE_TTL = 1000 // 1 second for GET requests
+
 async function request<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
   const url = `${API_BASE}${endpoint}`
+  const method = options.method?.toUpperCase() || 'GET'
+  const cacheKey = `${method}:${url}`
+
+  // Check cache for GET requests
+  if (method === 'GET') {
+    const cached = cache.get(cacheKey)
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      return { success: true, data: cached.data }
+    }
+  }
 
   const response = await fetch(url, {
     headers: {
@@ -29,6 +43,11 @@ async function request<T>(
       success: false,
       error: data.error || `HTTP ${response.status}`
     }
+  }
+
+  // Cache successful GET responses
+  if (method === 'GET' && data.data !== undefined) {
+    cache.set(cacheKey, { data: data.data, timestamp: Date.now() })
   }
 
   return { success: true, data }
