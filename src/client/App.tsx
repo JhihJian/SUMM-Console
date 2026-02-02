@@ -1,4 +1,3 @@
-import React from 'react'
 import { TitleBar } from './components/layout/TitleBar.js'
 import { MainGrid, PlaceholderPanels } from './components/layout/MainGrid.js'
 import './styles/global.css'
