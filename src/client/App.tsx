@@ -8,10 +8,14 @@ import { DisplayPanel } from './components/DisplayPanel.js'
 import { SessionsPanel } from './components/SessionsPanel.js'
 import { ProgressPanel } from './components/ProgressPanel.js'
 import { TokenPanel } from './components/TokenPanel.js'
+import { ToastContainer } from './components/Toast.js'
+import { useToast } from './hooks/useToast.js'
 import './styles/global.css'
 import styles from './App.module.css'
 
 function App() {
+  const { toasts, removeToast } = useToast()
+
   return (
     <div style={{
       background: 'var(--color-bg-primary)',
@@ -30,6 +34,7 @@ function App() {
         <ProgressPanel />
         <TokenPanel />
       </MainGrid>
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   )
 }
